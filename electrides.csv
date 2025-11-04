@@ -1,0 +1,168 @@
+Formula      , Material id  , Space group  , Prototype    , E_hull (eV/atom)  , ELF ,Dim. ,Topo. ,Spillage   , Reference
+La5Bi3      , mp-1105962   , P63/mcm        , La5Bi3       ,0.0,0.92,1, TI        ,,
+Ba5Sb3      , mp-9909      , P63/mcm        , La5Bi3       ,0.0,0.833,1, HSP_SM   ,1.283,"Burton, Chem. Mater, 2018    "
+La5Sb3      , mp-1106084   , P63/mcm        , La5Bi3       ,0.0,0.916,1, N/A       , N/A    ,
+Er5Si3      , mp-31167     , P63/mcm        , La5Bi3       ,0.0,0.908,1, HSP_SM   ,2.1837,
+Er5Tl3      , mp-1105965   , P63/mcm        , La5Bi3       ,0.0,0.835,1, N/A       , N/A,
+La5Pb3      , mp-1105896   , P63/mcm        , La5Bi3       ,0.0,0.905,1, N/A       , N/A     ,
+Lu5Tl3      , mp-1106322   , P63/mcm        , La5Bi3       ,0.0,0.69,1, N/A       , N/A    ,
+Tb5Rh3      , mp-1105551   , P63/mcm        , La5Bi3       ,0.0,0.679,1, N/A       , N/A ,
+Ho5Rh3      , mp-30734     , P63/mcm        , La5Bi3       ,0.0,0.749,1, HSL_SM   ,2.2504,
+Ce5Ge3      , mp-510493    , P63/mcm        , La5Bi3       ,0.0,0.842,1, HSL_SM   , N/A ,
+Nd5Sn3      , mp-510503    , P63/mcm        , La5Bi3       ,0.0,0.912,1, HSP_SM   ,1.7397,
+Sc5Si3      , mp-7822      , P63/mcm        , La5Bi3       ,0.0,0.889,1, HSP_SM   ,2.0008,
+Lu5Rh3      , mp-865778    , P63/mcm        , La5Bi3       ,0.0,0.713,1, HSL_SM   , N/A    ,
+Ca5As3      , mp-10047     , P63/mcm        , La5Bi3       ,0.0,0.8,1, HSP_SM   ,1.1776,
+Y5Si3       , mp-2538      , P63/mcm        , La5Bi3       ,0.0,0.921,1, HSP_SM   ,2.0165,"Burton, Chem. Mater, 2018;  Lu, JACS, 2016*"
+Tb5Si3      , mp-206       , P63/mcm        , La5Bi3       ,0.0,0.916,1, HSP_SM   ,2.1322,
+Sr5Sb3      , mp-2585      , P63/mcm        , La5Bi3       ,0.0,0.797,1, HSP_SM   ,1.1229,
+Nd5Ge3      , mp-1464      , P63/mcm        , La5Bi3       ,0.0,0.905,1, HSP_SM   ,1.8623,
+Tb5Ge3      , mp-2610      , P63/mcm        , La5Bi3       ,0.0,0.917,1, HSP_SM   ,2.1493,
+Er5Ga3      , mp-11368     , P63/mcm        , La5Bi3       ,0.0,0.81,1, HSL_SM   ,3.1467,
+Ho5Si3      , mp-13236     , P63/mcm        , La5Bi3       ,0.0,0.912,1, HSP_SM   ,2.1695,
+Sr5As3      , mp-15698     , P63/mcm        , La5Bi3       ,0.0,0.833,1, HSP_SM   ,0.9332,"Burton, Chem. Mater, 2018"
+Yb5Sb3      , mp-201       , P63/mcm        , La5Bi3       ,0.0,0.704,1, HSP_SM   ,1.4971,"Lu, PRB, 2018*     "
+Dy5Si3      , mp-2836      , P63/mcm        , La5Bi3       ,0.0,0.914,1, HSP_SM   ,2.1587,
+Sr5Bi3      , mp-29620     , P63/mcm        , La5Bi3       ,0.0,0.761,1, HSP_SM   ,1.5682,
+Ba5Bi3      , mp-29621     , P63/mcm        , La5Bi3       ,0.0,0.808,1, HSP_SM   ,1.8182,
+Tb5Tl3      , mp-30879     , P63/mcm        , La5Bi3       ,0.0,0.873,1, HSL_SM   , N/A    ,
+Pr5Ge3      , mp-17124     , P63/mcm        , La5Bi3       ,0.0,0.898,1, HSP_SM   ,2.0692,
+Sm5Si3      , mp-1106373   , P63/mcm        , La5Bi3       ,0.0,0.904,1, N/A       , N/A    ,
+Nd5Pb3      , mp-1106152   , P63/mcm        , La5Bi3       ,0.0,0.909,1, N/A       , N/A    ,
+Lu5Ir3      , mp-1105600   , P63/mcm        , La5Bi3       ,0.0,0.49,1, N/A       , N/A    ,
+Ca5Sb3      , mp-12467     , P63/mcm        , La5Bi3       ,0.001,0.747,1, HSP_SM   ,1.2727,"Burton, Chem. Mater, 2018    "
+Er5Rh3      , mp-569915    , P63/mcm        , La5Bi3       ,0.003,0.747,1, HSL_SM   ,2.2509,
+Ba5As3      , mp-10045     , P63/mcm        , La5Bi3       ,0.008,0.855,1, HSP_SM   ,1.0779,"Burton, Chem. Mater, 2018      "
+Sc5Ga3      , mp-17332     , P63/mcm        , La5Bi3       ,0.016,0.827,1, HSL_SM   ,2.0048,
+Tb5Pt3      , mp-1105543   , P63/mcm        , La5Bi3       ,0.026,0.85,1, N/A       , N/A    ,
+Tm5Pt3      , mp-1105869   , P63/mcm        , La5Bi3       ,0.032,0.776,1, N/A       , N/A    ,
+Yb5Pb3      , mp-571634    , P63/mcm        , La5Bi3       ,0.045,0.563,1, HSL_SM   ,3.6007,
+HoMgSn            , mp-977388    , I4/mmm           , HoMgSn             ,0.0,0.732,2, TI        ,1.9682,
+PrScGe            , mp-4738      , I4/mmm           , HoMgSn             ,0.0,0.869,2, TCI       ,1.9467,"Burton, Chem. Mater, 2018        "
+NdScGe            , mp-4854      , I4/mmm           , HoMgSn             ,0.0,0.864,2, TCI       ,1.5493,"Burton, Chem. Mater, 2018        "
+TbMgSn            , mp-1071468   , I4/mmm           , HoMgSn             ,0.0,0.738,2, TCI       ,0.898,
+LaScGe            , mp-1077837   , I4/mmm           , HoMgSn             ,0.0,0.88,2, N/A       , N/A    ,
+TmMgSn            , mp-1072345   , I4/mmm           , HoMgSn             ,0.0,0.724,2, HSL_SM   ,2.0273,
+ErMgSn            , mp-862993    , I4/mmm           , HoMgSn             ,0.0,0.73,2, HSL_SM   , N/A    ,
+SmScSi            , mp-8320      , I4/mmm           , HoMgSn             ,0.0,0.852,2, HSP_SM   ,1.9903,
+PrScSi            , mp-1024960   , I4/mmm           , HoMgSn             ,0.007,0.869,2, N/A       ,1.4451,
+SmTiGe            , mp-10454     , I4/mmm           , HoMgSn             ,0.012,0.703,2, HSL_SM   ,2.2418,
+NdScSi            , mp-1077558   , I4/mmm           , HoMgSn             ,0.014,0.864,2, N/A       ,1.9988,
+CeScSb            , mp-1077197   , I4/mmm           , HoMgSn             ,0.02,0.813,2, N/A       ,2.4886,
+YTiGe             , mp-10455     , I4/mmm           , HoMgSn             ,0.022,0.725,2, N/A       ,2.0321,
+Pr2MgNi2    , mp-2926      , P4/mbm           , Pr2MgNi2     ,0.0,0.687,2, HSL_SM   ,1.6673,
+Pr2MgGe2    , mp-21350     , P4/mbm           , Pr2MgNi2     ,0.0,0.829,2, HSL_SM   ,1.0544,
+Nd2MgNi2    , mp-5925      , P4/mbm           , Pr2MgNi2     ,0.0,0.684,2, HSL_SM   ,1.8016,
+Sm2MgGe2    , mp-867932    , P4/mbm           , Pr2MgNi2     ,0.0,0.83,2, HSL_SM   ,1.6946,
+Mg(ScGa)2      , mp-13570     , P4/mbm           , Pr2MgNi2     ,0.0,0.701,2, HSL_SM   ,1.4219,
+Tb2MgGe2    , mp-867301    , P4/mbm           , Pr2MgNi2     ,0.0,0.83,2, HSL_SM   ,1.868,
+Dy2MgSi2    , mp-570561    , P4/mbm           , Pr2MgNi2     ,0.0,0.83,2, HSL_SM   ,1.2553,
+Ce2MgSi2    , mp-505296    , P4/mbm           , Pr2MgNi2     ,0.0,0.849,2, N/A       , N/A    ,
+Dy2MgGe2    , mp-977559    , P4/mbm           , Pr2MgNi2     ,0.0,0.829,2, HSL_SM   ,1.2521,
+Ce2MgNi2    , mp-19910     , P4/mbm           , Pr2MgNi2     ,0.0,0.748,2, HSL_SM   , N/A    ,
+Y2MgCu2     , mp-4901      , P4/mbm           , Pr2MgNi2     ,0.0,0.625,2, HSL_SM   ,1.0312,
+Li(NdSi)2      , mp-1091362   , P4/mbm           , Pr2MgNi2     ,0.015,0.8,2, HSP_SM   ,1.862,
+Yb2MgSi2    , mp-13357     , P4/mbm           , Pr2MgNi2     ,0.082,0.627,2, HSL_SM   ,1.9908,
+Ca5Si3      , mp-793       , I4/mcm           , Ca5Si3       ,0.0,0.233,0, HSL_SM   ,1.9947,"Burton, Chem. Mater, 2018      "
+Ca5Au3      , mp-30368     , I4/mcm           , Ca5Si3       ,0.0,0.675,0, HSP_SM   , N/A    ,"Burton, Chem. Mater, 2018      "
+Yb5Au3      , mp-568944    , I4/mcm           , Ca5Si3       ,0.0,0.623,0, HSP_SM   ,2.4281,
+Sr5Si3      , mp-746       , I4/mcm           , Ca5Si3       ,0.0,0.327,0, TI        ,1.4715,
+Yb5Ag3      , mp-571212    , I4/mcm           , Ca5Si3       ,0.0,0.379,0, HSP_SM   ,1.3221,
+La5Si3      , mp-10961     , I4/mcm           , Ca5Si3       ,0.0,0.406,0, HSP_SM   , N/A    ,"Burton, Chem. Mater, 2018      "
+Sr5Sn3    , mp-17720     , I4/mcm     , Ca5Si3    ,0.002,0.661,0, HSL_SM   , N/A    ,"Burton, Chem. Mater, 2018       "
+Sr5Ge3    , mp-17757     , I4/mcm     , Ca5Si3    ,0.003,0.334,0, TI        , N/A    ,"Burton, Chem. Mater, 2018       "
+Ca5Hg3    , mp-31154     , I4/mcm     , Ca5Si3    ,0.008,0.551,0, N/A       , N/A    ,
+Ba5Sn3    , mp-17325     , I4/mcm     , Ca5Si3    ,0.009,0.706,0, TCI       , N/A    ,"Burton, Chem. Mater, 2018      "
+Sr5In3    , mp-570362    , I4/mcm     , Ca5Si3    ,0.01,0.601,0, HSP_SM   , N/A    ,
+Ba5Pb3    , mp-622106    , I4/mcm     , Ca5Si3    ,0.013,0.59,0, N/A       , N/A    ,
+Ln3In        , mp-20909     , Pm-3m      , Ln3In       ,0.0,0.509,0, HSP_SM   ,1.4378,"Burton, Chem. Mater, 2018     "
+Nd3In        , mp-21483     , Pm-3m      , Ln3In       ,0.0,0.513,0, HSP_SM   ,1.9881,"Burton, Chem. Mater, 2018      "
+La3Tl        , mp-371       , Pm-3m      , Ln3In       ,0.0,0.439,0, HSP_SM   , N/A    ,"Burton, Chem. Mater, 2018    "
+Nd3Sm        , mp-974066    , Pm-3m      , Ln3In       ,0.029,0.694,3, N/A       ,3.9224,"Burton, Chem. Mater, 2018   "
+Ca3Pb        , mp-30479     , Pm-3m      , Ln3In       ,0.041,0.542,0, HSP_SM   ,1.5868,
+K3Pd         , mp-1064508   , Pm-3m      , Ln3In       ,0.189,0.317,0, N/A       ,1.1952,
+Rb3Pt        , mp-1067281   , Pm-3m      , Ln3In       ,0.222,0.857,0, N/A       ,1.3418,
+Rb3Os        , mp-1066774   , Pm-3m      , Ln3In       ,1.438,0.629,0, N/A       ,1.8765,
+Rb3Re        , mp-1065428   , Pm-3m      , Ln3In       ,1.579,0.442,0, N/A       , N/A    ,
+Ca2Sb        , mp-9925      , I4/mmm     , Sr2Bi       ,0.0,0.976,0, Triv_ins ,0.0343,"Zhang, PRX, 2017"
+Sr2Bi        , mp-29619     , I4/mmm     , Sr2Bi       ,0.024,0.939,0, TCI       , N/A    ,"Zhang, PRX, 2017"
+Ba2Bi        , mp-567872    , I4/mmm     , Sr2Bi       ,0.027,0.811,0, TI        ,1.2539,"Zhang, PRX, 2017"
+Sr2Sb        , mp-15624     , I4/mmm     , Sr2Bi       ,0.03,0.941,0, TCI       ,0.0358,
+Ba2Sb        , mp-9908      , I4/mmm     , Sr2Bi       ,0.03,0.798,0, TCI       ,1.0461,"Zhang, PRX, 2017"
+Ca2As        , mp-10106     , I4/mmm     , Sr2Bi       ,0.046,0.973,0, TCI       ,1.0041,"Zhang, PRX, 2017"
+Sr2As        , mp-15697     , I4/mmm     , Sr2Bi       ,0.08,0.919,0, TCI       ,0.8797,"Zhang, PRX, 2017"
+Pr4MgRu         , mp-605873    , F-43m         , Pr4MgRu      ,0.0,0.818,0, HSP_SM   , N/A    ,"Burton, Chem. Mater, 2018      "
+La4MgRu         , mp-605878    , F-43m         , Pr4MgRu      ,0.0,0.828,0, TI        , N/A    ,
+Er4InIr         , mp-567685    , F-43m         , Pr4MgRu      ,0.0,0.533,0, Triv_ins ,2.0855,
+Ho4InIr         , mp-567479    , F-43m         , Pr4MgRu      ,0.0,0.532,0, Triv_ins ,2.084,
+Tb4CdRh         , mp-568366    , F-43m         , Pr4MgRu      ,0.0,0.702,0, HSP_SM   ,1.3755,
+Tb4MgIr         , mp-567351    , F-43m         , Pr4MgRu      ,0.0,0.654,0, TI        ,2.1953,
+La4CdRu         , mp-570820    , F-43m         , Pr4MgRu      ,0.0,0.826,0, HSP_SM   , N/A    ,
+Ho2C         , mp-1640      , R-3m          , Ca2N      ,0.0,0.845,2, TI        ,1.052,"Inoshita, PRX, 2014 "
+Y2C          , mp-1334      , R-3m          , Ca2N      ,0.0,0.869,2, TI        ,1.0057,"Burton, Chem. Mater, 2018; Inoshita, PRX, 2014 ; Zhang, JPCL, 2015"
+Tb2C         , mp-692       , R-3m          , Ca2N      ,0.0,0.811,2, TI        ,1.0317,"Inoshita, PRX, 2014 "
+Dy2C         , mp-12574     , R-3m          , Ca2N      ,0.0,0.835,2, TI        , N/A    ,"Inoshita, PRX, 2014 "
+Ba2N         , mp-1892      , R-3m          , Ca2N      ,0.0,0.734,2, N/A       ,1.0165," Walsh, J. Mater. Chem. C, 2013"
+Sr2N         , mp-1245      , R-3m          , Ca2N      ,0.0,0.775,2, N/A       ,0.0084," Walsh, J. Mater. Chem. C, 2013"
+Ca2N         , mp-2686      , R-3m          , Ca2N      ,0.0,0.767,2, N/A       ,0.0003,"Burton, Chem. Mater, 2018; Lee, Nature, 2013    "
+Er3Rh        , mp-11437     , Pnma          , Er3Rh     ,0.0,0.803,0, TI        ,2.4753,
+Dy3Co        , mp-646392    , Pnma          , Er3Rh     ,0.0,0.576,0, TI        , N/A    ,
+Ho3Co        , mp-622565    , Pnma          , Er3Rh     ,0.0,0.816,0, TI        ,2.3818,
+Ca3Au        , mp-30366     , Pnma          , Er3Rh     ,0.001,0.67,0, HSL_SM   , N/A    ,"Burton, Chem. Mater, 2018      "
+Ba3FeN3    , mp-8306      , P63/m          , Ba3FeN3  ,0.0,0.851,1, HSP_SM   ,1.9261,
+Ba3MnN3    , mp-9324      , P63/m          , Ba3FeN3  ,0.0,0.879,1, HSL_SM   ,1.6516,
+Sr3CrN3    , mp-12906     , P63/m          , Ba3FeN3  ,0.0,0.895,1, N/A       ,2.0078,"Burton, Chem. Mater, 2018      "
+Ba3CrN3    , mp-12905     , P63/m          , Ba3FeN3  ,0.0,0.903,1, HSP_SM   ,1.032,"Burton, Chem. Mater, 2018      "
+Sm2(Ga3Co)3  , mp-1005789   , Cmcm     , Sm2(Ga3Co)3  ,0.0,0.673,0, TI        , N/A    ,
+Y2(Ga3Co)3   , mp-21625     , Cmcm     , Sm2(Ga3Co)3  ,0.0,0.509,0, TI        , N/A    ,
+Y2(Al3Co)3   , mp-11486     , Cmcm     , Sm2(Ga3Co)3  ,0.0,0.859,0, TCI       ,1.7643,
+Ho2(Ga3Co)3  , mp-14125     , Cmcm     , Sm2(Ga3Co)3  ,0.0,0.502,0, TI        , N/A    ,
+Mg3Cd        , mp-30490     , P63/mmc      , Mg3Cd        ,0.0,0.663,1, TI        ,1.2203,"Burton, Chem. Mater, 2018      "
+Ca3Tl        , mp-984744    , P63/mmc      , Mg3Cd        ,0.014,0.801,1, N/A       , N/A    ,"Burton, Chem. Mater, 2018      "
+Mg3Sn        , mp-643067    , P63/m        , Mg3Cd        ,0.026,0.608,2, HSL_SM   , N/A    ,"Burton, Chem. Mater, 2018      "
+Sc(MnAl2)4   , mp-31081  , I4/mmm     , Ca(MnAl2)4   ,0.0,0.659,0, N/A       ,1.0927,
+Ca(MnAl2)4   , mp-10878  , I4/mmm     , Ca(MnAl2)4   ,0.019,0.706,0, TCI       ,0.8354,
+Nd12Co6Sn  , mp-510232 , Im-3    , Nd12Co6Sn     ,0.0,0.852,0, HSP_SM   ,1.883,
+Nd12Ni6Sn  , mp-542879 , Im-3       , Nd12Co6Sn  ,0.0,0.842,0, HSP_SM   ,1.5813,
+Nd5(FeB3)2  , mp-8793 , R-3m    , Pr5(CoB3)2   ,0.0,0.791,2, N/A       , N/A    ,
+Pr5(CoB3)2  , mp-7735  , R-3m    , Pr5(CoB3)2  ,0.003,0.801,2, N/A       ,1.0628,
+HoAl2        , mp-391       , Fd-3m         , HoAl2        ,0.0,0.744,0, HSP_SM   ,1.3139,
+YAl2         , mp-2322      , Fd-3m         , HoAl2        ,0.0,0.747,0, HSP_SM   ,1.0328,
+Li2PrGe      , mp-1079867   , P63/mmc     , Li2PrGe      ,0.158,0.764,0, Triv_ins , N/A    ,
+Li2NdGe      , mp-1025473   , P63/mmc     , Li2PrGe      ,0.166,0.771,0, TCI       , N/A    ,
+Ba3N         , mp-10736     , P63/mcm     , Ba3N         ,0.0,0.588,1, HSP_SM   ,2.0485,"Park, PRL, 2018"
+Cs3O         , mp-510262    , P63/mcm     , Ba3N         ,0.0,0.599,1, HSP_SM   , N/A    ,"Park, PRL, 2018"
+Sr3Ag2       , mp-30357     , R-3        , Sr3Ag2    ,0.0,0.623,0, TI        , N/A    ,"Burton, Chem. Mater, 2018     "
+Ba3Ag2       , mp-12612     , R-3        , Sr3Ag2    ,0.0,0.739,0, HSL_SM   , N/A    ,"Burton, Chem. Mater, 2018    "
+NdGa         , mp-1448      , Cmcm             , NdGa            ,0.0,0.654,0, TI        ,1.0863,"Burton, Chem. Mater, 2018    "
+PrGa         , mp-11404     , Cmcm             , NdGa            ,0.0,0.648,0, TI        ,1.0311,"Burton, Chem. Mater, 2018   "
+Ca5Bi3 , mp-27145     , Pnma             , Ca5Bi3    ,0.0,0.841,0, N/A       , N/A    ,
+Ca5Sb3 , mp-17564     , Pnma             , Ca5Bi3    ,0.0,0.837,0, HSP_SM   ,0.9434,
+Ba2LiN    , mp-605860    , P42/nmc        , Ba2LiN       ,0.05,0.766,2, HSL_SM   , N/A    ,
+Ba2NaO       , mp-1019519   , Cmme          , Ba2NaO       ,0.0,0.654,1, HSP_SM   , N/A    ,
+Ba4Al5       , mp-2631      , P63/mmc  , Ba4Al5     ,0.0,0.82,0, HSP_SM   ,1.6292,"Burton, Chem. Mater, 2018    "
+Ba5CrN5      , mp-29082     , C2/m       , Ba5CrN5   ,0.0,0.968,1, Triv_ins , N/A    ,
+Ba7(BIr)12  , mp-27261     , R-3m     , Ba7(BIr)12  ,0.0,0.927,0, TI        , N/A    ,
+BaAg         , mp-11840     , Pnma             , BaAg            ,0.0,0.366,0, HSL_SM   ,2.3884,"Burton, Chem. Mater, 2018   "
+Ca3Ag8       , mp-646824    , Im-3m      , Ca3Ag8        ,0.039,0.835,0, HSP_SM   , N/A    ,
+Ca3Cd2       , mp-18167     , P42/mnm  , Ca3Cd2       ,0.002,0.545,0, TI        , N/A    ,"Burton, Chem. Mater, 2018   "
+Ca3Si2Ni3    , mp-542138    , Pnma    , Ca3Si2Ni3   ,0.0,0.769,1, TI        , N/A    ,
+Ca5(GaN2)2   , mp-28489     , Cmce    , Ca5(GaN2)2   ,0.0,0.81,0, TCI       , N/A    ,"Burton, Chem. Mater, 2018   "
+Ca5Au2       , mp-30367     , C2/c       , Ca5Au2       ,0.0,0.487,0, TCI       , N/A    ,"Burton, Chem. Mater, 2018    "
+Ca6Al7O16 , mp-721592    , I-43d   , Ca6Al7O16    ,0.0,0.0,0, N/A       , N/A    ,"Matsuishi, Science, 2003*    "
+K2RbPt       , mp-1079567   , P4/mbm        , K2RbPt       ,0.152,0.828,0, N/A       , N/A    ,
+K4Al3(SiO4)3 , mp-1019788  , P-43n , K4Al3(SiO4)3 ,0.013,0.994,0, N/A       , N/A    ,
+LaH2         , mp-24153     , Fm-3m         , LaH2         ,0.0,0.57,0, N/A       ,1.2501,"Mizoguchi, Iorg. Chem., 2016*   "
+Li12Mg3Si4   , mp-8331      , I-43d , Li12Mg3Si4   ,0.0,0.485,0, N/A       , N/A    ,
+Li2Ca3N6     , mp-1020010   , Cmcm    , Li2Ca3N6   ,0.038,0.89,1, TCI       , N/A    ,
+Li7IN2       , mp-504574    , Fd-3m      , Li7IN2    ,0.78,0.921,0, N/A       , N/A    ,
+Na2Cl        , mp-1077015   , Cmmm          , Na2Cl        ,0.228,0.978,0, Triv_ins , N/A    ,
+Na3Cl2       , mp-1069676   , Cmmm       , Na3Cl2    ,0.167,0.777,2, N/A       , N/A    ,
+Sc2Ni        , mp-867501    , Fd-3m         , Sc2Ni        ,0.0,0.904,0, HSP_SM   , N/A    ,
+Sr2Cu2O3     , mp-8806      , Fmmm    , Sr2Cu2O3 ,0.549,0.864,1, TI        , N/A    ,
+SrAg         , mp-30355     , Pnma             , SrAg             ,0.0,0.406,0, HSL_SM   , N/A    ,"Burton, Chem. Mater, 2018     "
+Y3H2         , mp-569037    , P63/mmc  , Y3H2       ,0.012,0.905,0, N/A       , N/A    ,
+Yb2Sn        , mp-570050    , P63/mmc     , Yb2Sn         ,0.0,0.729,0, TI        , N/A    ,
+YbMgPb             , mp-1079319   , P-62m      , YbMgPb           ,0.094,0.669,0, TCI       ,2.095,
+Na3In2Au     , mp-542680    , Fd-3m      , Na3In2Au   ,0.0,0.639,0, HSL_SM   ,2.1391,"Burton, Chem. Mater, 2018        "
+Sr7Au3       , mp-30422     , P63mc    , Sr7Au3     ,0.0,0.62,0, HSP_SM   , N/A    ,"Burton, Chem. Mater, 2018       "
