@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --gres=gpu:1
-#SBATCH --time=3-00:00:00
+#SBATCH --time=5-00:00:00
 #SBATCH --output=logs/gen_ter_ele_csp_%j.out
 #SBATCH --error=logs/gen_ter_ele_csp_%j.err
 #SBATCH --mail-type=END,FAIL,TIME_LIMIT
@@ -33,7 +33,7 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 CSP_MODEL="$HOME/SOFT/mattergen_test/outputs/singlerun/2025-10-16/18-55-08"
 COMPOSITIONS_FILE="ternary_electride_compositions.json"
 OUTPUT_DIR="../results/ternary_csp_electrides"
-STRUCTURES_PER_COMP=32
+STRUCTURES_PER_ATOM=2.0
 MAX_COMPOSITIONS=-1
 START_INDEX=0
 
@@ -43,8 +43,8 @@ echo "=========================================="
 echo "CSP Model: $CSP_MODEL"
 echo "Compositions: $COMPOSITIONS_FILE"
 echo "Output: $OUTPUT_DIR"
-echo "Structures per composition: $STRUCTURES_PER_COMP"
-echo "Batch size: Auto-calculated per composition"
+echo "Structures per atom: $STRUCTURES_PER_ATOM"
+echo "Batch size: Exact count per supercell (proportional)"
 echo "Max compositions: $MAX_COMPOSITIONS"
 echo "=========================================="
 
@@ -75,10 +75,9 @@ python generate_structures_batch.py \
     --compositions "$COMPOSITIONS_FILE" \
     --output-dir "$OUTPUT_DIR" \
     --model "$CSP_MODEL" \
-    --n-structures $STRUCTURES_PER_COMP \
+    --structures-per-atom $STRUCTURES_PER_ATOM \
     --max-compositions $MAX_COMPOSITIONS \
-    --start-index $START_INDEX \
-    --skip-existing
+    --start-index $START_INDEX
 
 echo ""
 echo " Structure generation completed"

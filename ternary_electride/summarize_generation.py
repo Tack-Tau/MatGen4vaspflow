@@ -39,8 +39,11 @@ def summarize_generation(output_base_dir: Path) -> Dict:
     for struct_dir in structure_dirs:
         formula = struct_dir.name.replace("_structures", "")
         
-        # Count structures: check ZIP file first, then individual CIF files
+        n_structures = 0
+        
+        # Count structures: check ZIP file first, then extxyz, then individual CIF files
         cif_zip = struct_dir / "generated_crystals_cif.zip"
+        extxyz_file = struct_dir / "generated_crystals.extxyz"
         
         if cif_zip.exists():
             # Count files in ZIP
@@ -51,8 +54,24 @@ def summarize_generation(output_base_dir: Path) -> Dict:
             except Exception as e:
                 print(f"  Warning: Could not read {cif_zip}: {e}")
                 n_structures = 0
-        else:
-            # Count individual CIF files
+        
+        # If no CIFs found in zip, try counting from extxyz
+        if n_structures == 0 and extxyz_file.exists():
+            try:
+                with open(extxyz_file, 'r') as f:
+                    content = f.read()
+                    lines = content.split('\n')
+                    # Count structures in extxyz (each structure starts with atom count line followed by Lattice= line)
+                    for i, line in enumerate(lines):
+                        if line.strip() and line.strip()[0].isdigit():
+                            # Check if next line contains Lattice= (extxyz format)
+                            if i+1 < len(lines) and 'Lattice=' in lines[i+1]:
+                                n_structures += 1
+            except Exception as e:
+                print(f"  Warning: Could not read {extxyz_file}: {e}")
+        
+        # If still no structures, count individual CIF files
+        if n_structures == 0:
             cif_files = list(struct_dir.glob("*.cif"))
             n_structures = len(cif_files)
         

@@ -33,7 +33,7 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 CSP_MODEL="$HOME/SOFT/mattergen_test/outputs/singlerun/2025-10-16/18-55-08"
 COMPOSITIONS_FILE="binary_electride_compositions.json"
 OUTPUT_DIR="../results/binary_csp_electrides"
-STRUCTURES_PER_COMP=32
+STRUCTURES_PER_ATOM=2.0
 MAX_COMPOSITIONS=-1
 START_INDEX=0
 
@@ -43,8 +43,8 @@ echo "=========================================="
 echo "CSP Model: $CSP_MODEL"
 echo "Compositions: $COMPOSITIONS_FILE"
 echo "Output: $OUTPUT_DIR"
-echo "Structures per composition: $STRUCTURES_PER_COMP"
-echo "Batch size: Auto-calculated per composition"
+echo "Structures per atom: $STRUCTURES_PER_ATOM"
+echo "Batch size: Exact count per supercell (proportional)"
 echo "Max compositions: $MAX_COMPOSITIONS"
 echo "=========================================="
 
@@ -75,10 +75,9 @@ python generate_structures_batch.py \
     --compositions "$COMPOSITIONS_FILE" \
     --output-dir "$OUTPUT_DIR" \
     --model "$CSP_MODEL" \
-    --n-structures $STRUCTURES_PER_COMP \
+    --structures-per-atom $STRUCTURES_PER_ATOM \
     --max-compositions $MAX_COMPOSITIONS \
-    --start-index $START_INDEX \
-    --skip-existing
+    --start-index $START_INDEX
 
 echo ""
 echo " Structure generation completed"

@@ -10,7 +10,6 @@ This script calls mattergen-generate for each composition via subprocess.
 """
 
 import json
-import math
 import shutil
 import subprocess
 import sys
@@ -18,48 +17,6 @@ import zipfile
 from pathlib import Path
 from typing import List, Dict
 import argparse
-
-
-def calculate_optimal_batch_size(structures_per_supercell: int) -> int:
-    """
-    Calculate optimal batch size to minimize rounding waste.
-    
-    Args:
-        structures_per_supercell: Number of structures to generate per supercell
-    
-    Returns:
-        Optimal batch size (power of 2 or common divisor)
-    """
-    # If very small, use it directly
-    if structures_per_supercell <= 8:
-        return structures_per_supercell
-    
-    # Preferred batch sizes (powers of 2 and common values)
-    preferred_sizes = [64, 32, 20, 16, 10, 8, 5, 4, 2, 1]
-    
-    # Find largest batch size that divides evenly or is close
-    best_batch_size = 1
-    min_waste = float('inf')
-    
-    for batch_size in preferred_sizes:
-        if batch_size > structures_per_supercell:
-            continue
-        
-        # Calculate waste from rounding up
-        num_batches = math.ceil(structures_per_supercell / batch_size)
-        actual = num_batches * batch_size
-        waste = actual - structures_per_supercell
-        
-        # Prefer exact divisors (no waste)
-        if waste == 0:
-            return batch_size
-        
-        # Otherwise minimize waste
-        if waste < min_waste:
-            min_waste = waste
-            best_batch_size = batch_size
-    
-    return best_batch_size
 
 
 def expand_composition_to_supercells(composition: Dict[str, int], max_atoms: int = 20) -> List[Dict[str, int]]:
@@ -130,14 +87,18 @@ def generate_structures_for_composition(
     n_structures: int,
     max_atoms: int = 20,
     timeout: int = 1800,
-    skip_if_exists: bool = True
-) -> bool:
+    skip_if_exists: bool = True,
+    structures_per_atom: float = None
+) -> tuple[bool, str]:
     """
     Generate structures for a single composition using MatterGen CSP mode.
     
     This function expands the composition to all valid supercells (up to max_atoms)
     and generates equal numbers of structures for EACH supercell individually.
     Batch size is automatically calculated to minimize rounding waste.
+    
+    If structures_per_atom is provided, n_structures is recalculated proportional
+    to the total atoms across all supercells.
     
     Args:
         composition: Dict like {"Li": 3, "Al": 1, "N": 2}
@@ -157,7 +118,7 @@ def generate_structures_for_composition(
     # Check if already generated (for resume capability)
     if skip_if_exists and check_if_already_generated(output_dir, min_structures=1):
         print(f"    Already generated (skipping)")
-        return True
+        return True, "Already generated"
     
     # Create output directory
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -165,46 +126,34 @@ def generate_structures_for_composition(
     # Expand composition to all valid supercells
     supercells = expand_composition_to_supercells(composition, max_atoms)
     
-    # Distribute structures evenly across supercells, handling remainders
-    base_structures = n_structures // len(supercells)
-    remainder = n_structures % len(supercells)
+    # Calculate total atoms across all supercells
+    total_atoms_across_supercells = sum(sum(sc.values()) for sc in supercells)
     
-    # First 'remainder' supercells get (base_structures + 1), rest get base_structures
+    # If structures_per_atom specified, calculate n_structures proportionally
+    if structures_per_atom is not None:
+        n_structures = max(1, int(round(total_atoms_across_supercells * structures_per_atom)))
+        print(f"  Proportional generation: {total_atoms_across_supercells} total atoms × {structures_per_atom} = {n_structures} structures")
+    
+    # Distribute structures across supercells proportional to atom count
     structures_per_supercell_list = []
-    for i in range(len(supercells)):
-        if i < remainder:
-            structures_per_supercell_list.append(base_structures + 1)
-        else:
-            structures_per_supercell_list.append(base_structures)
+    for sc in supercells:
+        sc_atoms = sum(sc.values())
+        # Proportional allocation: (atoms in this supercell / total atoms) * total structures
+        n_struct = max(1, int(round(sc_atoms / total_atoms_across_supercells * n_structures)))
+        structures_per_supercell_list.append(n_struct)
     
-    # Calculate batch sizes for the two groups
-    if remainder > 0:
-        batch_size_high = calculate_optimal_batch_size(base_structures + 1)
-        batch_size_low = calculate_optimal_batch_size(base_structures)
-    else:
-        batch_size_high = calculate_optimal_batch_size(base_structures)
-        batch_size_low = batch_size_high
-    
-    # Calculate actual total structures
-    total_structures_to_generate = 0
-    for n_struct in structures_per_supercell_list:
-        batch_sz = batch_size_high if n_struct == base_structures + 1 else batch_size_low
-        num_batches = max(1, math.ceil(n_struct / batch_sz))
-        total_structures_to_generate += num_batches * batch_sz
+    # Recalculate actual total (due to rounding)
+    total_structures_to_generate = sum(structures_per_supercell_list)
     
     print(f"  Configuration:")
     print(f"    Supercells: {len(supercells)}")
     print(f"    Target total structures: {n_structures}")
-    if remainder > 0:
-        print(f"    Distribution: {remainder} supercells with {base_structures + 1} structures, {len(supercells) - remainder} with {base_structures}")
-        print(f"    Auto batch_size: {batch_size_high} (high) / {batch_size_low} (low)")
-    else:
-        print(f"    Distribution: {base_structures} structures per supercell (even split)")
-        print(f"    Auto batch_size: {batch_size_high}")
+    print(f"    Distribution: Proportional to atom count per supercell")
     print(f"    Actual total structures: {total_structures_to_generate}")
     
     if total_structures_to_generate != n_structures:
-        print(f"    Note: {total_structures_to_generate - n_structures} extra structures due to batch rounding")
+        diff = total_structures_to_generate - n_structures
+        print(f"    Note: {abs(diff)} structure{'s' if abs(diff) != 1 else ''} {'more' if diff > 0 else 'fewer'} due to rounding")
     
     # Print supercell info
     print(f"  Supercell sizes:")
@@ -222,6 +171,7 @@ def generate_structures_for_composition(
     temp_dir.mkdir(parents=True, exist_ok=True)
     
     all_success = True
+    first_error = None
     total_generated = 0
     all_cif_files = []
     all_extxyz_entries = []
@@ -240,10 +190,10 @@ def generate_structures_for_composition(
         # Format composition as JSON list with single supercell
         comp_arg = json.dumps([supercell])
         
-        # Calculate batch size and number of batches for this supercell
-        current_batch_size = batch_size_high if target_structures == base_structures + 1 else batch_size_low
-        num_batches = max(1, math.ceil(target_structures / current_batch_size))
-        actual_structures = num_batches * current_batch_size
+        # Set batch_size to exact number of structures needed (no rounding waste)
+        current_batch_size = target_structures
+        num_batches = 1
+        actual_structures = target_structures
         
         # Build mattergen-generate command
         cmd = [
@@ -271,7 +221,7 @@ def generate_structures_for_composition(
                 "--trainer.precision=32"
             ])
         
-        print(f"    [{supercell_idx}/{len(supercells)}] Generating {actual_structures} structures for {sc_formula} ({num_batches} batches)")
+        print(f"    [{supercell_idx}/{len(supercells)}] Generating {actual_structures} structures for {sc_formula} (batch_size={current_batch_size})")
         
         try:
             result = subprocess.run(
@@ -285,40 +235,89 @@ def generate_structures_for_composition(
             # Collect generated CIF files
             cif_files = list(supercell_dir.glob("*.cif"))
             
-            if cif_files:
-                all_cif_files.extend(cif_files)
-                n_generated = len(cif_files)
-                print(f"        Generated {n_generated} structures for {sc_formula}")
-                total_generated += n_generated
+            # Check for extxyz file as alternative success indicator
+            extxyz_file = supercell_dir / "generated_crystals.extxyz"
+            extxyz_exists = extxyz_file.exists()
+            
+            # Success if either CIF files or extxyz file exists
+            if cif_files or extxyz_exists:
+                if cif_files:
+                    all_cif_files.extend(cif_files)
+                    n_generated = len(cif_files)
+                    print(f"        Generated {n_generated} CIF structures for {sc_formula}")
+                    total_generated += n_generated
                 
                 # Collect extxyz entries if file exists
-                extxyz_file = supercell_dir / "generated_crystals.extxyz"
-                if extxyz_file.exists():
+                if extxyz_exists:
                     with open(extxyz_file, 'r') as f:
-                        all_extxyz_entries.append(f.read())
+                        extxyz_content = f.read()
+                        all_extxyz_entries.append(extxyz_content)
+                        # Count structures in extxyz (count lines that start with a number followed by Properties=)
+                        if not cif_files:
+                            lines = extxyz_content.split('\n')
+                            n_structures = 0
+                            for i, line in enumerate(lines):
+                                if line.strip() and line.strip()[0].isdigit():
+                                    # Check if next line contains Lattice= (extxyz format)
+                                    if i+1 < len(lines) and 'Lattice=' in lines[i+1]:
+                                        n_structures += 1
+                            print(f"        Generated {n_structures} structures for {sc_formula} (extxyz only)")
+                            total_generated += n_structures
             else:
-                print(f"        Failed to generate structures for {sc_formula}")
+                # Debug: List all files created in the directory
+                all_files = list(supercell_dir.glob("*"))
+                print(f"        DEBUG: No CIF or extxyz files found. All files in {supercell_dir.name}:")
+                for f in all_files[:20]:  # Show first 20 files
+                    print(f"          - {f.name} ({f.stat().st_size} bytes)")
+                if len(all_files) > 20:
+                    print(f"          ... and {len(all_files)-20} more files")
+                if not all_files:
+                    print(f"          (directory is empty)")
+                error_msg = f"Exit code: {result.returncode}"
+                if first_error is None:
+                    first_error = f"{sc_formula}: {error_msg}"
+                    if result.stderr:
+                        first_error += f" | stderr: {result.stderr[:200]}"
+                
+                print(f"        ERROR: Failed to generate structures for {sc_formula}")
+                print(f"        Exit code: {result.returncode}")
+                print(f"        Command: {' '.join(cmd)}")
+                if result.stderr:
+                    print(f"        STDERR (first 500 chars):")
+                    print("        " + "\n        ".join(result.stderr[:500].split('\n')))
+                if result.stdout:
+                    print(f"        STDOUT (last 300 chars):")
+                    print("        " + "\n        ".join(result.stdout[-300:].split('\n')))
                 all_success = False
                 
         except subprocess.TimeoutExpired:
-            print(f"        Timeout for {sc_formula} after {timeout} seconds")
+            if first_error is None:
+                first_error = f"{sc_formula}: Timeout after {timeout} seconds"
+            print(f"        ERROR: Timeout for {sc_formula} after {timeout} seconds")
             all_success = False
         except Exception as e:
-            print(f"        Exception for {sc_formula}: {e}")
+            if first_error is None:
+                first_error = f"{sc_formula}: Exception {type(e).__name__}: {str(e)[:100]}"
+            print(f"        ERROR: Exception for {sc_formula}: {type(e).__name__}: {e}")
+            import traceback
+            traceback.print_exc()
             all_success = False
     
     # Combine all generated files
-    if all_cif_files:
-        print(f"  Combining {len(all_cif_files)} structures from {len(supercells)} supercells...")
-        
-        # Create combined zip file
-        combined_zip = output_dir / "generated_crystals_cif.zip"
-        with zipfile.ZipFile(combined_zip, 'w') as zf:
-            for cif_file in all_cif_files:
-                zf.write(cif_file, arcname=cif_file.name)
+    if all_cif_files or all_extxyz_entries:
+        if all_cif_files:
+            print(f"  Combining {len(all_cif_files)} CIF structures from {len(supercells)} supercells...")
+            
+            # Create combined zip file
+            combined_zip = output_dir / "generated_crystals_cif.zip"
+            with zipfile.ZipFile(combined_zip, 'w') as zf:
+                for cif_file in all_cif_files:
+                    zf.write(cif_file, arcname=cif_file.name)
         
         # Create combined extxyz file
         if all_extxyz_entries:
+            if not all_cif_files:
+                print(f"  Combining {total_generated} structures from {len(supercells)} supercells (extxyz only)...")
             combined_extxyz = output_dir / "generated_crystals.extxyz"
             with open(combined_extxyz, 'w') as f:
                 f.write('\n'.join(all_extxyz_entries))
@@ -327,14 +326,20 @@ def generate_structures_for_composition(
         shutil.rmtree(temp_dir)
         
         print(f"  Success! Generated {total_generated} total structures across {len(supercells)} supercells")
-        print(f"  Output: {combined_zip.name}, {combined_extxyz.name if all_extxyz_entries else '(no extxyz)'}")
-        return True
+        if all_cif_files and all_extxyz_entries:
+            print(f"  Output: {combined_zip.name}, {combined_extxyz.name}")
+        elif all_cif_files:
+            print(f"  Output: {combined_zip.name} (no extxyz)")
+        else:
+            print(f"  Output: {combined_extxyz.name} (extxyz only)")
+        return True, "Success"
     else:
         # Clean up temporary directory
         shutil.rmtree(temp_dir, ignore_errors=True)
         
-        print(f"  Failed: No structures generated")
-        return False
+        error_detail = first_error if first_error else "No structures generated"
+        print(f"  Failed: {error_detail}")
+        return False, error_detail
 
 
 def process_compositions(
@@ -345,7 +350,8 @@ def process_compositions(
     max_atoms: int = 20,
     max_compositions: int = -1,
     start_index: int = 0,
-    skip_existing: bool = True
+    skip_existing: bool = True,
+    structures_per_atom: float = None
 ) -> Dict:
     """
     Process multiple compositions and generate structures.
@@ -383,15 +389,19 @@ def process_compositions(
     print(f"Range: {start_index} to {end_index}")
     print(f"Model: {model_path}")
     print(f"Model type: {model_type}")
-    print(f"Structures per composition: {n_structures}")
+    if structures_per_atom is not None:
+        print(f"Generation mode: Proportional ({structures_per_atom} structures per atom)")
+    else:
+        print(f"Generation mode: Fixed ({n_structures} structures per composition)")
     print(f"Max atoms per cell: {max_atoms} (supercell expansion enabled)")
-    print(f"Batch size: Auto-calculated per composition")
+    print(f"Batch size: Exact count per supercell (proportional to atoms)")
     print(f"Resume mode: {'Enabled (skip existing)' if skip_existing else 'Disabled (regenerate all)'}")
     print("="*70)
     
     success_count = 0
     skipped_count = 0
     failed_compositions = []
+    failed_details = {}  # Store detailed error info
     
     for idx, comp_data in enumerate(compositions, start=1):
         formula = comp_data['formula']
@@ -399,7 +409,7 @@ def process_compositions(
         
         print(f"\n[{idx}/{len(compositions)}] Generating: {formula}")
         print(f"  Composition: {composition}")
-        print(f"  Excess electrons: {comp_data['excess_electrons']:.2f}")
+        print(f"  Excess electrons: {comp_data['excess_electrons']}")
         print(f"  Total atoms: {comp_data['total_atoms']}")
         
         # Output directory for this composition
@@ -413,20 +423,22 @@ def process_compositions(
             continue
         
         # Generate structures
-        success = generate_structures_for_composition(
+        success, error_msg = generate_structures_for_composition(
             composition=composition,
             formula=formula,
             output_dir=output_dir,
             model_path=model_path,
             n_structures=n_structures,
             max_atoms=max_atoms,
-            skip_if_exists=False  # Already checked above
+            skip_if_exists=False,  # Already checked above
+            structures_per_atom=structures_per_atom
         )
         
         if success:
             success_count += 1
         else:
             failed_compositions.append(formula)
+            failed_details[formula] = error_msg
         
         # Progress update every 10 compositions
         if idx % 10 == 0:
@@ -456,17 +468,26 @@ def process_compositions(
     print(f"Success rate: {stats['success_rate']:.1f}%")
     
     if failed_compositions:
-        print("\nFailed compositions:")
-        for formula in failed_compositions[:20]:
-            print(f"  - {formula}")
-        if len(failed_compositions) > 20:
-            print(f"  ... and {len(failed_compositions)-20} more")
+        print("\nFailed compositions (with error details):")
+        for formula in failed_compositions[:10]:
+            error_detail = failed_details.get(formula, "Unknown error")
+            print(f"  - {formula}: {error_detail}")
+        if len(failed_compositions) > 10:
+            print(f"  ... and {len(failed_compositions)-10} more")
         
         # Save failed compositions
         failed_file = output_base_dir / "failed_compositions.txt"
         with open(failed_file, 'w') as f:
             f.write('\n'.join(failed_compositions))
         print(f"\nFailed compositions saved to: {failed_file}")
+        
+        # Save detailed error log
+        error_log_file = output_base_dir / "failed_compositions_detailed.txt"
+        with open(error_log_file, 'w') as f:
+            for formula in failed_compositions:
+                error_detail = failed_details.get(formula, "Unknown error")
+                f.write(f"{formula}: {error_detail}\n")
+        print(f"Detailed error log saved to: {error_log_file}")
     
     print("="*70)
     
@@ -500,7 +521,13 @@ def main():
         "--n-structures", "-n",
         type=int,
         default=20,
-        help="Number of structures per composition (default: 20)"
+        help="Number of structures per composition (default: 20). Ignored if --structures-per-atom is set."
+    )
+    parser.add_argument(
+        "--structures-per-atom",
+        type=float,
+        default=None,
+        help="Structures per atom (proportional mode). If set, overrides --n-structures. E.g., 2.0 generates 2 structures per atom across all supercells."
     )
     parser.add_argument(
         "--max-atoms",
@@ -553,7 +580,8 @@ def main():
         max_atoms=args.max_atoms,
         max_compositions=args.max_compositions,
         start_index=args.start_index,
-        skip_existing=args.skip_existing
+        skip_existing=args.skip_existing,
+        structures_per_atom=args.structures_per_atom
     )
     
     # Save statistics
@@ -565,4 +593,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
