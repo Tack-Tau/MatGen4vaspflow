@@ -100,14 +100,14 @@ tail -f logs/mattergen_ternary_<jobid>.out
 
 For each composition (e.g., `Li3AlN2`):
 1. MatterGen runs in **CSP mode** (conditioned on exact composition)
-2. Generates 20 structures (adjustable via `STRUCTURES_PER_COMP`)
+2. Generates structures adjustable via `STRUCTURES_PER_ATOM`
 3. Saves structures as CIF files in `results/ternary_electrides/Li3AlN2_structures/`
 
 **Key Parameters in Script:**
 
 ```bash
 MODEL="mattergen_base"           # Base model (no fine-tuning)
-STRUCTURES_PER_COMP=60           # Target structures per composition
+STRUCTURES_PER_ATOM=2.0          # Target structures per atom
 MAX_COMPOSITIONS=-1              # Process all compositions (-1 = all)
 ```
 
@@ -366,7 +366,7 @@ MAX_COMPOSITIONS=100
 
 **Solution:** The batch size is auto-calculated. If you get OOM errors, reduce structures per composition:
 ```bash
-STRUCTURES_PER_COMP=30  # Reduce from 60
+STRUCTURES_PER_ATOM=1.0  # Reduce from 2.0
 # This will automatically use smaller batch sizes per supercell
 ```
 

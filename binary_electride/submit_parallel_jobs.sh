@@ -3,7 +3,7 @@
 # Each job processes a different subset of compositions
 
 # Configuration
-COMPOSITIONS_PER_JOB=200
+COMPOSITIONS_PER_JOB=400
 COMPOSITIONS_FILE="binary_electride_compositions.json"
 
 # Auto-detect total compositions from JSON file

@@ -197,7 +197,7 @@ Edit `binary_electride/generate_binary_csp.sh` to set parameters:
 
 ```bash
 CSP_MODEL="$HOME/SOFT/mattergen_test/outputs/singlerun/2025-10-16/18-55-08"
-STRUCTURES_PER_COMP=32    # Structures per composition
+STRUCTURES_PER_ATOM=2.0   # Structures per atom
 MAX_COMPOSITIONS=-1       # -1 = process all compositions
 START_INDEX=0             # Starting index
 ```
@@ -291,7 +291,7 @@ Edit `ternary_electride/generate_ternary_csp.sh`:
 CSP_MODEL="$HOME/SOFT/mattergen_test/outputs/singlerun/2025-10-16/18-55-08"
 
 # Set generation parameters
-STRUCTURES_PER_COMP=60    # Structures per composition
+STRUCTURES_PER_ATOM=2.0   # Structures per atom
 MAX_COMPOSITIONS=-1       # -1 = process all compositions
 START_INDEX=0             # Starting index (for partial runs)
 ```
@@ -695,7 +695,7 @@ compositions = search_ternary_electrides(
 **Out of GPU memory:**
 ```bash
 # Reduce structures per composition in generate_ternary_csp.sh
-STRUCTURES_PER_COMP=30  # Reduce from 60
+STRUCTURES_PER_ATOM=1.0  # Reduce from 2.0
 # Batch size is auto-calculated and will adjust accordingly
 ```
 

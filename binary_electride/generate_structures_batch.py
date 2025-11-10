@@ -232,8 +232,24 @@ def generate_structures_for_composition(
                 check=False
             )
             
-            # Collect generated CIF files
+            # Collect generated CIF files (check both individual files and zip)
             cif_files = list(supercell_dir.glob("*.cif"))
+            zip_file = supercell_dir / "generated_crystals_cif.zip"
+            
+            # If no individual CIF files but zip exists, extract and rename them
+            if not cif_files and zip_file.exists():
+                temp_cif_extract = supercell_dir / ".temp_cif_extract"
+                temp_cif_extract.mkdir(exist_ok=True)
+                
+                with zipfile.ZipFile(zip_file, 'r') as zf:
+                    for name in zf.namelist():
+                        if name.endswith('.cif'):
+                            # Extract with renamed file (prefix with supercell name)
+                            new_name = f"{supercell_dir.name}_{name}"
+                            extract_path = temp_cif_extract / new_name
+                            with open(extract_path, 'wb') as f:
+                                f.write(zf.read(name))
+                            cif_files.append(extract_path)
             
             # Check for extxyz file as alternative success indicator
             extxyz_file = supercell_dir / "generated_crystals.extxyz"
@@ -320,10 +336,14 @@ def generate_structures_for_composition(
                 print(f"  Combining {total_generated} structures from {len(supercells)} supercells (extxyz only)...")
             combined_extxyz = output_dir / "generated_crystals.extxyz"
             with open(combined_extxyz, 'w') as f:
-                f.write('\n'.join(all_extxyz_entries))
+                for content in all_extxyz_entries:
+                    if not content.endswith('\n'):
+                        content += '\n'
+                    f.write(content)
         
         # Clean up temporary directory
-        shutil.rmtree(temp_dir)
+        if temp_dir.exists():
+            shutil.rmtree(temp_dir, ignore_errors=True)
         
         print(f"  Success! Generated {total_generated} total structures across {len(supercells)} supercells")
         if all_cif_files and all_extxyz_entries:
@@ -334,11 +354,10 @@ def generate_structures_for_composition(
             print(f"  Output: {combined_extxyz.name} (extxyz only)")
         return True, "Success"
     else:
-        # Clean up temporary directory
-        shutil.rmtree(temp_dir, ignore_errors=True)
-        
+        # Keep temp_dir for debugging when generation fails
         error_detail = first_error if first_error else "No structures generated"
         print(f"  Failed: {error_detail}")
+        print(f"  NOTE: Temporary directory preserved for debugging: {temp_dir}")
         return False, error_detail
 
 

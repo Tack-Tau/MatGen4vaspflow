@@ -36,7 +36,7 @@ sbatch generate_binary_csp.sh
 ```
 
 **Key parameters** in the script:
-- `STRUCTURES_PER_COMP=60` - Number of structures per composition
+- `STRUCTURES_PER_ATOM=2.0` - Number of structures per atom per cell per composition
 - `MAX_COMPOSITIONS=-1` - Process all compositions (-1 means all)
 - `START_INDEX=0` - Starting composition index
 
@@ -105,12 +105,10 @@ For each composition, the script automatically generates multiple supercells up 
 - ...
 - Li10N10 (20 atoms)
 
-The `STRUCTURES_PER_COMP` parameter is distributed evenly across all supercell sizes.
-
 ## Troubleshooting
 
 ### GPU Memory Issues
-If you encounter OOM errors, reduce `STRUCTURES_PER_COMP` in the generation script.
+If you encounter OOM errors, reduce `STRUCTURES_PER_ATOM` in the generation script.
 
 ### Job Timeout
 Use `submit_parallel_jobs.sh` to split the work across multiple jobs, each processing fewer compositions.
