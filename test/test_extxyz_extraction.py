@@ -127,9 +127,9 @@ def verify_extxyz(combined_extxyz: Path, expected_structures: int):
             double_blanks += 1
     
     if double_blanks > 0:
-        print(f"  ✗ WARNING: Found {double_blanks} double blank lines (may cause parsing issues)")
+        print(f"    WARNING: Found {double_blanks} double blank lines (may cause parsing issues)")
     else:
-        print(f"  ✓ No double blank lines found")
+        print(f"    No double blank lines found")
     
     # Check for proper structure separation
     print(f"\nVerifying structure boundaries...")
@@ -164,9 +164,9 @@ def verify_extxyz(combined_extxyz: Path, expected_structures: int):
     )
     
     if results['all_match']:
-        print(f"\n  ✓ All counts match!")
+        print(f"\n    All counts match!")
     else:
-        print(f"\n  ✗ Mismatch detected:")
+        print(f"\n    Mismatch detected:")
         if results['ase_count'] != expected_structures:
             print(f"    - ASE read {results['ase_count']} but expected {expected_structures}")
         if results['manual_count'] != expected_structures:
@@ -225,14 +225,14 @@ def main():
     print(f"{'='*70}")
     
     if results['all_match']:
-        print(f"✓ ALL TESTS PASSED!")
+        print(f"  ALL TESTS PASSED!")
         print(f"  - Extracted extxyz from {len(supercell_info)} supercells")
         print(f"  - Combined {results['ase_count']} structures correctly")
         print(f"  - ASE can read all structures")
         print(f"  - Manual counting matches ASE")
-        print(f"\n✓ Extxyz concatenation logic is CORRECT")
+        print(f"\n  Extxyz concatenation logic is CORRECT")
     else:
-        print(f"✗ SOME TESTS FAILED")
+        print(f"  SOME TESTS FAILED")
         print(f"  Please review the verification output above")
     
     print(f"{'='*70}")

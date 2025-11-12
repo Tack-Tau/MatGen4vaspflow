@@ -131,9 +131,9 @@ def verify_outputs(combined_zip: Path, combined_extxyz: Path):
             print(f"  Unique names: {results['zip_unique']}")
 
             if results['zip_total'] == results['zip_unique']:
-                print(f"  ✓ All CIF names are unique")
+                print(f"    All CIF names are unique")
             else:
-                print(f"  ✗ WARNING: Duplicate CIF names found!")
+                print(f"    WARNING: Duplicate CIF names found!")
                 duplicates = [name for name in cif_names if cif_names.count(name) > 1]
                 print(f"  Duplicates: {set(duplicates)}")
 
@@ -172,9 +172,9 @@ def verify_outputs(combined_zip: Path, combined_extxyz: Path):
         print(f"  Manual count: {results['manual_count']} structures")
 
         if results['ase_count'] == results['manual_count']:
-            print(f"  ✓ ASE and manual counts match")
+            print(f"    ASE and manual counts match")
         else:
-            print(f"  ✗ WARNING: Count mismatch!")
+            print(f"    WARNING: Count mismatch!")
 
     # Cross-check CIF vs extxyz counts
     if 'zip_total' in results and 'ase_count' in results:
@@ -183,9 +183,9 @@ def verify_outputs(combined_zip: Path, combined_extxyz: Path):
         print(f"  Structures in extxyz: {results['ase_count']}")
 
         if results['zip_total'] == results['ase_count']:
-            print(f"  ✓ CIF and extxyz counts match")
+            print(f"    CIF and extxyz counts match")
         else:
-            print(f"  ✗ WARNING: Counts do not match!")
+            print(f"    WARNING: Counts do not match!")
 
     print(f"\n{'='*70}")
     return results
@@ -225,11 +225,11 @@ def main():
     # Final summary
     print("\nFINAL SUMMARY:")
     if combined_zip and combined_extxyz:
-        print(f"  ✓ Both generated_crystals_cif.zip and generated_crystals.extxyz created")
+        print(f"    Both generated_crystals_cif.zip and generated_crystals.extxyz created")
     elif combined_zip:
-        print(f"  ✓ Only generated_crystals_cif.zip created (no extxyz)")
+        print(f"    Only generated_crystals_cif.zip created (no extxyz)")
     elif combined_extxyz:
-        print(f"  ✓ Only generated_crystals.extxyz created (no CIF zip)")
+        print(f"    Only generated_crystals.extxyz created (no CIF zip)")
 
     if all([
         results.get('zip_total') == results.get('zip_unique'),
@@ -237,11 +237,11 @@ def main():
         results.get('zip_total') == results.get('ase_count')
     ]):
         print(f"\n{'='*70}")
-        print(f"✓ ALL TESTS PASSED!")
+        print(f"  ALL TESTS PASSED!")
         print(f"{'='*70}")
     else:
         print(f"\n{'='*70}")
-        print(f"✗ SOME TESTS FAILED - Please review the output above")
+        print(f"  SOME TESTS FAILED - Please review the output above")
         print(f"{'='*70}")
 
 

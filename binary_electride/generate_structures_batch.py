@@ -291,11 +291,11 @@ def generate_structures_for_composition(
                     print(f"          (directory is empty)")
                 error_msg = f"Exit code: {result.returncode}"
                 if first_error is None:
-                    first_error = f"{sc_formula}: {error_msg}"
+                    first_error = f"{formula} (supercell: {sc_formula}): {error_msg}"
                     if result.stderr:
                         first_error += f" | stderr: {result.stderr[:200]}"
                 
-                print(f"        ERROR: Failed to generate structures for {sc_formula}")
+                print(f"        ERROR: Failed to generate structures for supercell {sc_formula} of {formula}")
                 print(f"        Exit code: {result.returncode}")
                 print(f"        Command: {' '.join(cmd)}")
                 if result.stderr:
@@ -308,13 +308,13 @@ def generate_structures_for_composition(
                 
         except subprocess.TimeoutExpired:
             if first_error is None:
-                first_error = f"{sc_formula}: Timeout after {timeout} seconds"
-            print(f"        ERROR: Timeout for {sc_formula} after {timeout} seconds")
+                first_error = f"{formula} (supercell: {sc_formula}): Timeout after {timeout} seconds"
+            print(f"        ERROR: Timeout for supercell {sc_formula} of {formula} after {timeout} seconds")
             all_success = False
         except Exception as e:
             if first_error is None:
-                first_error = f"{sc_formula}: Exception {type(e).__name__}: {str(e)[:100]}"
-            print(f"        ERROR: Exception for {sc_formula}: {type(e).__name__}: {e}")
+                first_error = f"{formula} (supercell: {sc_formula}): Exception {type(e).__name__}: {str(e)[:100]}"
+            print(f"        ERROR: Exception for supercell {sc_formula} of {formula}: {type(e).__name__}: {e}")
             import traceback
             traceback.print_exc()
             all_success = False
@@ -336,7 +336,10 @@ def generate_structures_for_composition(
                 print(f"  Combining {total_generated} structures from {len(supercells)} supercells (extxyz only)...")
             combined_extxyz = output_dir / "generated_crystals.extxyz"
             with open(combined_extxyz, 'w') as f:
+                # Concatenate extxyz files directly (no blank lines between)
+                # Each entry is already a complete extxyz file from one supercell
                 for content in all_extxyz_entries:
+                    # Ensure content ends with exactly one newline
                     if not content.endswith('\n'):
                         content += '\n'
                     f.write(content)
