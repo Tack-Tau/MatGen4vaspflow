@@ -34,6 +34,7 @@ CSP_MODEL="$HOME/SOFT/mattergen_test/outputs/singlerun/2025-10-16/18-55-08"
 COMPOSITIONS_FILE="binary_electride_compositions.json"
 OUTPUT_DIR="../results/binary_csp_electrides"
 STRUCTURES_PER_ATOM=2.0
+MAX_BATCH_SIZE=100  # Maximum structures per GPU batch (splits larger requests to avoid OOM)
 MAX_COMPOSITIONS=-1
 START_INDEX=0
 
@@ -44,7 +45,7 @@ echo "CSP Model: $CSP_MODEL"
 echo "Compositions: $COMPOSITIONS_FILE"
 echo "Output: $OUTPUT_DIR"
 echo "Structures per atom: $STRUCTURES_PER_ATOM"
-echo "Batch size: Exact count per supercell (proportional)"
+echo "Max batch size: $MAX_BATCH_SIZE (auto-split for large requests)"
 echo "Max compositions: $MAX_COMPOSITIONS"
 echo "=========================================="
 
@@ -76,6 +77,7 @@ python generate_structures_batch.py \
     --output-dir "$OUTPUT_DIR" \
     --model "$CSP_MODEL" \
     --structures-per-atom $STRUCTURES_PER_ATOM \
+    --max-batch-size $MAX_BATCH_SIZE \
     --max-compositions $MAX_COMPOSITIONS \
     --start-index $START_INDEX
 

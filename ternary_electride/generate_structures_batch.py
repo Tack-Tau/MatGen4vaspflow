@@ -88,7 +88,8 @@ def generate_structures_for_composition(
     max_atoms: int = 20,
     timeout: int = 1800,
     skip_if_exists: bool = True,
-    structures_per_atom: float = None
+    structures_per_atom: float = None,
+    max_batch_size: int = 100
 ) -> tuple[bool, str]:
     """
     Generate structures for a single composition using MatterGen CSP mode.
@@ -107,6 +108,8 @@ def generate_structures_for_composition(
         model_path: Path to MatterGen model checkpoint or pretrained name
                    - Checkpoint: "outputs/singlerun/2025-10-10/15-30-45"
                    - Pretrained: "mattergen_base" or "mp_20_base"
+        max_batch_size: Maximum structures per GPU batch (default: 100)
+                       Larger requests are split into multiple batches to avoid OOM
         n_structures: Total number of structures to generate
         max_atoms: Maximum atoms per cell (default: 20 for mp_20)
         timeout: Timeout in seconds (default 30 min)
@@ -190,10 +193,22 @@ def generate_structures_for_composition(
         # Format composition as JSON list with single supercell
         comp_arg = json.dumps([supercell])
         
-        # Set batch_size to exact number of structures needed (no rounding waste)
-        current_batch_size = target_structures
-        num_batches = 1
-        actual_structures = target_structures
+        # Split into multiple batches if target_structures exceeds max_batch_size
+        # This prevents GPU OOM errors when generating many structures
+        if target_structures <= max_batch_size:
+            # Small enough - generate in one batch
+            current_batch_size = target_structures
+            num_batches = 1
+            actual_structures = target_structures
+        else:
+            # Too large - split into multiple smaller batches
+            current_batch_size = max_batch_size
+            num_batches = (target_structures + max_batch_size - 1) // max_batch_size
+            actual_structures = current_batch_size * num_batches
+            
+            if actual_structures != target_structures:
+                print(f"        NOTE: Splitting {target_structures} structures into {num_batches} batches of {current_batch_size}")
+                print(f"        Will generate {actual_structures} structures total (rounded up)")
         
         # Build mattergen-generate command
         cmd = [
@@ -221,7 +236,10 @@ def generate_structures_for_composition(
                 "--trainer.precision=32"
             ])
         
-        print(f"    [{supercell_idx}/{len(supercells)}] Generating {actual_structures} structures for {sc_formula} (batch_size={current_batch_size})")
+        if num_batches == 1:
+            print(f"    [{supercell_idx}/{len(supercells)}] Generating {actual_structures} structures for {sc_formula} (batch_size={current_batch_size})")
+        else:
+            print(f"    [{supercell_idx}/{len(supercells)}] Generating {actual_structures} structures for {sc_formula} ({num_batches} batches × {current_batch_size} per batch)")
         
         try:
             result = subprocess.run(
@@ -373,7 +391,8 @@ def process_compositions(
     max_compositions: int = -1,
     start_index: int = 0,
     skip_existing: bool = True,
-    structures_per_atom: float = None
+    structures_per_atom: float = None,
+    max_batch_size: int = 100
 ) -> Dict:
     """
     Process multiple compositions and generate structures.
@@ -453,7 +472,8 @@ def process_compositions(
             n_structures=n_structures,
             max_atoms=max_atoms,
             skip_if_exists=False,  # Already checked above
-            structures_per_atom=structures_per_atom
+            structures_per_atom=structures_per_atom,
+            max_batch_size=max_batch_size
         )
         
         if success:
@@ -558,6 +578,12 @@ def main():
         help="Maximum atoms per cell for supercell expansion (default: 20, matching mp_20 dataset)"
     )
     parser.add_argument(
+        "--max-batch-size",
+        type=int,
+        default=100,
+        help="Maximum structures per GPU batch (default: 100). Larger requests split into multiple batches to avoid OOM."
+    )
+    parser.add_argument(
         "--max-compositions", "-m",
         type=int,
         default=-1,
@@ -603,7 +629,8 @@ def main():
         max_compositions=args.max_compositions,
         start_index=args.start_index,
         skip_existing=args.skip_existing,
-        structures_per_atom=args.structures_per_atom
+        structures_per_atom=args.structures_per_atom,
+        max_batch_size=args.max_batch_size
     )
     
     # Save statistics
