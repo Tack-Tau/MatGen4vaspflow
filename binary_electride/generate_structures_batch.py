@@ -238,15 +238,18 @@ def generate_structures_for_composition(
         
         if num_batches == 1:
             print(f"    [{supercell_idx}/{len(supercells)}] Generating {actual_structures} structures for {sc_formula} (batch_size={current_batch_size})")
+            adjusted_timeout = timeout
         else:
             print(f"    [{supercell_idx}/{len(supercells)}] Generating {actual_structures} structures for {sc_formula} ({num_batches} batches × {current_batch_size} per batch)")
+            adjusted_timeout = timeout * num_batches * 1.2
+            print(f"        Timeout adjusted: {timeout}s → {int(adjusted_timeout)}s for {num_batches} batches")
         
         try:
             result = subprocess.run(
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=timeout,
+                timeout=adjusted_timeout,
                 check=False
             )
             
@@ -392,7 +395,8 @@ def process_compositions(
     start_index: int = 0,
     skip_existing: bool = True,
     structures_per_atom: float = None,
-    max_batch_size: int = 100
+    max_batch_size: int = 100,
+    timeout: int = 1800
 ) -> Dict:
     """
     Process multiple compositions and generate structures.
@@ -406,7 +410,9 @@ def process_compositions(
         max_compositions: Max compositions to process (-1 for all)
         start_index: Starting index in compositions list
         skip_existing: Skip compositions that already have generated structures
-        
+        structures_per_atom: Structures per atom (proportional mode)
+        max_batch_size: Maximum structures per GPU batch
+        timeout: Base timeout in seconds per batch
     Returns:
         Dictionary with generation statistics
     """
@@ -473,7 +479,8 @@ def process_compositions(
             max_atoms=max_atoms,
             skip_if_exists=False,  # Already checked above
             structures_per_atom=structures_per_atom,
-            max_batch_size=max_batch_size
+            max_batch_size=max_batch_size,
+            timeout=timeout
         )
         
         if success:
@@ -584,6 +591,12 @@ def main():
         help="Maximum structures per GPU batch (default: 100). Larger requests split into multiple batches to avoid OOM."
     )
     parser.add_argument(
+        "--timeout",
+        type=int,
+        default=1800,
+        help="Base timeout in seconds per batch (default: 1800 = 30 min). Auto-scaled for multiple batches."
+    )
+    parser.add_argument(
         "--max-compositions", "-m",
         type=int,
         default=-1,
@@ -630,7 +643,8 @@ def main():
         start_index=args.start_index,
         skip_existing=args.skip_existing,
         structures_per_atom=args.structures_per_atom,
-        max_batch_size=args.max_batch_size
+        max_batch_size=args.max_batch_size,
+        timeout=args.timeout
     )
     
     # Save statistics

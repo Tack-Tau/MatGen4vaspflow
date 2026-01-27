@@ -35,6 +35,7 @@ COMPOSITIONS_FILE="binary_electride_compositions.json"
 OUTPUT_DIR="../results/binary_csp_electrides"
 STRUCTURES_PER_ATOM=2.0
 MAX_BATCH_SIZE=100  # Maximum structures per GPU batch (splits larger requests to avoid OOM)
+TIMEOUT_PER_BATCH=1800  # Base timeout in seconds per batch (30 minutes) - auto-scaled for multiple batches
 MAX_COMPOSITIONS=-1
 START_INDEX=0
 
@@ -78,6 +79,7 @@ python generate_structures_batch.py \
     --model "$CSP_MODEL" \
     --structures-per-atom $STRUCTURES_PER_ATOM \
     --max-batch-size $MAX_BATCH_SIZE \
+    --timeout $TIMEOUT_PER_BATCH \
     --max-compositions $MAX_COMPOSITIONS \
     --start-index $START_INDEX
 
