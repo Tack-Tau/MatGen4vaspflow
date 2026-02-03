@@ -5,6 +5,7 @@
 # Configuration
 COMPOSITIONS_PER_JOB=400  # Adjust based on desired job size
 COMPOSITIONS_FILE="ternary_electride_compositions.json"
+STRUCTURES_PER_ATOM=2.0  # Number of structures to generate per atom
 
 # Auto-detect total compositions from JSON file
 if [ ! -f "$COMPOSITIONS_FILE" ]; then
@@ -30,6 +31,7 @@ NUM_JOBS=$(( (TOTAL_COMPOSITIONS + COMPOSITIONS_PER_JOB - 1) / COMPOSITIONS_PER_
 
 echo "Submitting $NUM_JOBS parallel generation jobs"
 echo "Each job will process $COMPOSITIONS_PER_JOB compositions"
+echo "Structures per atom: $STRUCTURES_PER_ATOM"
 echo "=========================================="
 
 for i in $(seq 0 $((NUM_JOBS - 1))); do
@@ -41,6 +43,7 @@ for i in $(seq 0 $((NUM_JOBS - 1))); do
     # Copy original script and modify parameters
     sed "s/^START_INDEX=.*/START_INDEX=$START_IDX/" generate_ternary_csp.sh | \
     sed "s/^MAX_COMPOSITIONS=.*/MAX_COMPOSITIONS=$COMPOSITIONS_PER_JOB/" | \
+    sed "s/^STRUCTURES_PER_ATOM=.*/STRUCTURES_PER_ATOM=$STRUCTURES_PER_ATOM/" | \
     sed "s/gen_ter_ele_csp_%j/gen_ter_ele_csp_batch${i}_%j/" > $TEMP_SCRIPT
     
     # Submit the job
