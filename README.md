@@ -46,7 +46,7 @@ This project uses MatterGen fine-tuning with a custom `is_electride` boolean pro
 ### Environment Setup
 
 ```bash
-conda activate mattersim
+conda activate mattergen
 ```
 
 ### Required Files
@@ -104,7 +104,7 @@ echo "Test electrides:" $(awk -F',' 'NR>1 && $NF==1' mp_20/test.csv | wc -l)
 ```bash
 # On cluster
 ssh HPC_HOST
-conda activate mattersim
+conda activate mattergen
 cd ~/SOFT/mattergen_test/
 
 # Convert to MatterGen format
@@ -727,7 +727,7 @@ sbatch ternary_electride/generate_ternary_csp.sh
 **MatterSim errors:**
 ```bash
 # Verify mattersim installation
-conda activate mattersim
+conda activate mattergen
 python -c "import mattersim; print(mattersim.__version__)"
 ```
 

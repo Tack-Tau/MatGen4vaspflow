@@ -16,7 +16,7 @@ module load cuda/11.8
 ulimit -s unlimited
 
 source ~/.bashrc
-conda activate mattersim
+conda activate mattergen
 
 cd $HOME/SOFT/mattergen_test/
 

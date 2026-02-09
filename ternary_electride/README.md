@@ -13,7 +13,7 @@ This workflow generates crystal structures for potential ternary electride compo
 
 ## Prerequisites
 
- ASE and Pymatgen installed (already in your `fplibenv` locally, `mattersim` on cluster)
+ ASE and Pymatgen installed (already in your `fplibenv` locally, `mattergen` on cluster)
  MatterGen base model accessible
  GPU access on cluster
 

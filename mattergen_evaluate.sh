@@ -17,7 +17,7 @@ module load cuda/11.8
 
 # Activate conda environment
 source ~/.bashrc
-conda activate mattersim
+conda activate mattergen
 
 # Navigate to working directory
 cd $HOME/SOFT/mattergen_test/

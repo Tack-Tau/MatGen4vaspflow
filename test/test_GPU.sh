@@ -17,9 +17,9 @@ echo "Loading CUDA module..."
 module load cuda/11.8
 
 # Activate conda environment
-echo "Activating mattersim environment..."
+echo "Activating mattergen environment..."
 source ~/.bashrc
-conda activate mattersim
+conda activate mattergen
 
 # Check CUDA module loaded
 echo -e "\n--- CUDA Module Check ---"

@@ -18,7 +18,7 @@ ulimit -s
 # Activate your Python environment
 
 source ~/.bashrc
-conda activate mattersim
+conda activate mattergen
 
 cd $HOME/SOFT/mattergen_test/
 
